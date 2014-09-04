@@ -25,10 +25,14 @@ module.exports = function(app, passport) {
 		res.redirect('/');
 	});
 
+	app.get('/confirmation-email', function(req, res){
+		res.render('confirmation-email');
+	});
+
 
 	// POST routes
 	app.post('/signup', passport.authenticate('local-signup', {
-		successRedirect : '/dashboard', //Temporary area "Wait confirmation email"
+		successRedirect : '/confirmation-email', //Temporary area "Wait confirmation email"
 		failureRedirect : '/signup',
 		failureFlash    : true
 	}));

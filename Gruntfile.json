@@ -1,6 +1,10 @@
 "use strict";
 
 module.exports = function(grunt) {
+
+
+	require("matchdep").filterDev("grut-*").forEach(grunt.loadNpmTasks);
+
 	grunt.iniConfig({});
 
 	grunt.loadNpmTasks('');

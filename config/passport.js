@@ -35,9 +35,8 @@ module.exports = function(passport) {
 					var newUser = new User();
 					newUser.local.email = email;
 					newUser.local.password = newUser.generateHash(password);
-					newUser.local.status = false; // waiting response confirm email
-					newUser.local.type = 1; // User type = guest
-
+					newUser.local.name = req.body.name;
+					newUser.local.status = false;
 
 					// save the user
 					newUser.save(function(err){
@@ -70,6 +69,9 @@ module.exports = function(passport) {
 
 			if (!user.validPassword(password)) 
 				return done(null, false, req.flash('loginMessage', 'Oops Wrong password.'))
+
+			if (user.local.status === false)
+				return done(null, false, req.flash('loginMessage','Check your email registration confirmation.'));
 
 			return done(null, user);
 
