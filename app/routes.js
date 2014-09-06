@@ -1,5 +1,7 @@
 // ./app/routes
 
+var products = require('./controllers/products');
+
 module.exports = function(app, passport) {
 	// GET routes
 	app.get('/', function(req, res){
@@ -28,6 +30,11 @@ module.exports = function(app, passport) {
 	app.get('/confirmation-email', function(req, res){
 		res.render('confirmation-email');
 	});
+
+	// Products routes 
+	app.get('/products',products.index);
+	app.get('/products/add', isLoggedIn, products.add);
+	app.post('/products/add', isLoggedIn, products.do_add);
 
 
 	// POST routes
