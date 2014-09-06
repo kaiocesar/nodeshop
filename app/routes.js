@@ -31,8 +31,8 @@ module.exports = function(app, passport) {
 		res.render('confirmation-email');
 	});
 
-	// Products routes 
-	app.get('/products',products.index);
+	// Products routes   (REGISTER)
+	app.get('/products', isLoggedIn, products.index);
 	app.get('/products/add', isLoggedIn, products.add);
 	app.post('/products/add', isLoggedIn, products.do_add);
 
