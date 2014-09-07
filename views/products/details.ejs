@@ -1,0 +1,122 @@
+<%-contentFor('content')%>
+<h1>Product details</h1>
+
+<% if(product) { %>
+
+<div class="row">
+
+    <div class="col-md-12">
+
+        <div class="thumbnail">
+            <img class="img-responsive" src="http://placehold.it/800x300" alt="">
+            <div class="caption-full">
+                <h4 class="pull-right"><%- product[0].price %></h4>
+                <h4><a href="#"><%- product[0].name %></a>
+                </h4>
+                <p><%- product[0].description %></p>
+            </div>
+            <div class="ratings">
+                <p class="pull-right">3 reviews</p>
+                <p>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                    4.0 stars
+                </p>
+            </div>
+        </div>
+
+        <div class="well">
+
+            <div class="text-right">
+	            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">
+  					Leave a Review
+				</button>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                    Anonymous
+                    <span class="pull-right">10 days ago</span>
+                    <p>This product was great in terms of quality. I would definitely buy another!</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                    Anonymous
+                    <span class="pull-right">12 days ago</span>
+                    <p>I've alredy ordered another one!</p>
+                </div>
+            </div>
+
+            <hr>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star"></span>
+                    <span class="glyphicon glyphicon-star-empty"></span>
+                    Anonymous
+                    <span class="pull-right">15 days ago</span>
+                    <p>I've seen some better than this, but not at this price. I definitely recommend this item.</p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Add a comment to this product</h4>
+      </div>
+      <div class="modal-body">
+        <form class="form" method="post">
+        	<div class="form-group">
+        		<input type="text" class="form-control" name="name" placeholder="Your name" />
+        	</div>
+        	
+        	<div class="form-group">
+        		<textarea class="form-control" name="message" cols="10" placeholder="Add your comment"></textarea>
+        	</div>
+        	<div class="form-group">
+        		<div class="modal-footer">
+		        	<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        	<button type="button" class="btn btn-primary">Add</button>
+		      	</div>
+        	</div>
+        </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+
+
+<% } %>

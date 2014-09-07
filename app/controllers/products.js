@@ -7,7 +7,6 @@ var ProductsSchema = require('../models/products');
 
 exports.index = function (req,res){ 
 	return ProductsSchema.find(function(err, products){
-		console.log(products);
 		if (! err) {
 			res.render('products/index',{
 				products : products
@@ -22,6 +21,7 @@ exports.index = function (req,res){
 
 
 exports.add = function (req, res) {	
+	console.log( req.flash('message') );
 	res.render('products/add', {message : req.flash('message')});
 };
 
@@ -30,12 +30,12 @@ exports.do_add = function (req, res) {
 	var DateNow = new Date();
 	var newProduct = new ProductsSchema();
 
-	newProduct.local.name = req.body.name;
-	newProduct.local.price = req.body.price;
-	newProduct.local.photo = newProduct.local.photo;
-	newProduct.local.description = req.body.description;
-	newProduct.local.status = true;
-	newProduct.local.createAt = DateNow;
+	newProduct.name = req.body.name;
+	newProduct.price = req.body.price;
+	newProduct.photo = newProduct.photo;
+	newProduct.description = req.body.description;
+	newProduct.status = true;
+	newProduct.createAt = DateNow;
 
 	newProduct.save(function(err){
 		if (!err) {
@@ -48,4 +48,25 @@ exports.do_add = function (req, res) {
 
 	res.redirect('/products/add');
 
+};
+
+
+exports.details = function(req, res) {
+	ProductsSchema.find({_id:req.params.id}, function(err,product){
+		if (!err) {
+			res.render('products/details',{ product : product });
+		} else {
+			res.render('products/details', { product : {} });
+		}
+	});
+	
+};
+
+
+exports.test = function(req, res) {
+	ProductsSchema.find(function(err, products){
+		if (!err) {
+			res.json(products);
+		}
+	})
 };

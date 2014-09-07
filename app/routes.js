@@ -31,8 +31,12 @@ module.exports = function(app, passport) {
 		res.render('confirmation-email');
 	});
 
+	// Products routes   (without registration)
+	app.get('/products', products.index);
+	app.get('/products/details/:id', products.details);
+	app.get('/produtos', products.test);
+
 	// Products routes   (REGISTER)
-	app.get('/products', isLoggedIn, products.index);
 	app.get('/products/add', isLoggedIn, products.add);
 	app.post('/products/add', isLoggedIn, products.do_add);
 
@@ -50,6 +54,8 @@ module.exports = function(app, passport) {
 		failureRedirect : "/login"		,
 		failureFlash    : true
 	}));
+
+
 
 
 };
