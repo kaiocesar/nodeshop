@@ -1,5 +1,13 @@
 <%-contentFor('content')%>
-<h1>Product details</h1>
+
+<div class="page-header"><h1>Product details</h1></div>
+
+<ol class="breadcrumb">
+  <li><a href="/">Home</a></li>
+  <li><a href="/products">Products</a></li>
+  <li class="active">Product details</li>
+</ol>
+
 
 <% if(product) { %>
 
@@ -10,7 +18,7 @@
         <div class="thumbnail">
             <img class="img-responsive" src="http://placehold.it/800x300" alt="">
             <div class="caption-full">
-                <h4 class="pull-right"><%- product[0].price %></h4>
+                <h4 class="pull-right"><%- maskinput(product[0].price) %></h4>
                 <h4><a href="#"><%- product[0].name %></a>
                 </h4>
                 <p><%- product[0].description %></p>

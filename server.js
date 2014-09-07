@@ -29,7 +29,7 @@ app.use(bodyParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname + "/public")));
-app.set('views', __dirname +"/views");
+app.set('views', __dirname +"/app/views");
 app.set('view engine','ejs');
 app.set('layout','layouts/front');
 

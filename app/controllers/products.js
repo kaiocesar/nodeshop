@@ -1,15 +1,20 @@
 // ./app/controllers/produtcs
 
 // Products Controller
-var connect = require('connect-flash');
+var numeral = require('numeral');
 
 var ProductsSchema = require('../models/products');
+
 
 exports.index = function (req,res){ 
 	return ProductsSchema.find(function(err, products){
 		if (! err) {
 			res.render('products/index',{
-				products : products
+				products : products,
+				maskinput : function(price) {
+					var currency = numeral(price).format('0,00.00');
+					return 'R$'+currency;
+				}
 			});
 		} else {
 			res.render('products/index',{
@@ -54,7 +59,13 @@ exports.do_add = function (req, res) {
 exports.details = function(req, res) {
 	ProductsSchema.find({_id:req.params.id}, function(err,product){
 		if (!err) {
-			res.render('products/details',{ product : product });
+			res.render('products/details',{ 
+				product : product,
+				maskinput : function(price) {
+					var currency = numeral(price).format('0,0.00');
+					return 'R$'+currency;
+				} 
+			});
 		} else {
 			res.render('products/details', { product : {} });
 		}
