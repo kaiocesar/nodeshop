@@ -1,13 +1,48 @@
 // ./app/routes
 
-var products = require('./controllers/products');
+
 
 module.exports = function(app, passport) {
-	// GET routes
-	app.get('/', function(req, res){
-		res.render('index');
-	});
 
+	var dashboard = require('../app/controllers/dashboard')(app);
+	var customers = require('../app/controllers/customers')(app);
+	var products = require('../app/controllers/products')(app);
+	var home  = require('../app/controllers/home')(app);
+
+	// GET routes
+	app.get('/', home.index);
+	app.get('/about', home.about);
+	app.get('/contacts', home.contacts);
+	app.post('/contacts', home.contacts_send);
+
+
+	// GET - Dashboard routes (dashboard)
+	app.get('/dashboard', dashboard.index);
+	app.get('/dashboard/settings', dashboard.settings);
+	app.get('/dashboard/profile', dashboard.profile);
+	app.get('/dashboard/visits', dashboard.visits);
+
+
+	// GET - Dashboard routes (customers)
+	app.get('/dashboard/customers', customers.index);
+	app.get('/dashboard/customers/add', customers.add);
+	app.get('/dashboard/customers/edit/:id', customers.edit);
+
+
+	// GET - Dashboard routes (products)
+	app.get('/dashboard/products', products.index);
+	app.get('/dashboard/products/add', products.add);
+	app.get('/dashboard/products/edit/:id', products.edit);
+
+
+
+
+
+
+
+
+
+	// routes refactory
 	app.get('/login', function(req, res){
 		res.render('login', {message: req.flash('loginMessage')});
 	});
@@ -31,15 +66,6 @@ module.exports = function(app, passport) {
 		res.render('confirmation-email');
 	});
 
-	// Products routes   (without registration)
-	app.get('/products', products.index);
-	app.get('/products/details/:id', products.details);
-	app.get('/produtos', products.test);
-
-	// Products routes   (REGISTER)
-	app.get('/products/add', isLoggedIn, products.add);
-	app.post('/products/add', isLoggedIn, products.do_add);
-
 
 	// POST routes
 	app.post('/signup', passport.authenticate('local-signup', {
@@ -54,6 +80,13 @@ module.exports = function(app, passport) {
 		failureRedirect : "/login"		,
 		failureFlash    : true
 	}));
+
+
+
+
+
+
+
 
 
 

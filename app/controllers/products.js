@@ -1,83 +1,104 @@
-// ./app/controllers/produtcs
+// ./app/controllers/produtcs.js
 
-// Products Controller
-var numeral = require('numeral');
+/**
+*	Product Controller
+*	@author Kaio Cesar <programador.kaio@gmail.com>		
+*/		
 
-var ProductsSchema = require('../models/products');
+module.exports = function(app) {
 
+	var numeral = require('numeral');
+	var formidable = require('formidable');
+	var util = require('util');
+	var fs = require('fs');
+	var mongoose = require('mongoose');
+	var ProductsSchema = require('../models/products');
 
-exports.index = function (req,res){ 
-	return ProductsSchema.find(function(err, products){
-		if (! err) {
-			res.render('products/index',{
-				products : products,
-				maskinput : function(price) {
-					var currency = numeral(price).format('0,00.00');
-					return 'R$'+currency;
+	var ProductsController = {
+		index : function (req, res){ 
+			return ProductsSchema.find(function(err, products){
+				if (! err) {
+					res.render('dashboard/products/index',{
+						products : products,
+						maskinput : function(price) {
+							var currency = numeral(price).format('0,00.00');
+							return 'R$'+currency;
+						}
+					});
+				} else {
+					res.render('dashboard/products/index',{
+						products : {}
+					});
 				}
 			});
-		} else {
-			res.render('products/index',{
-				products : {}
+		},
+		
+		add : function (req, res) {	
+			res.render('dashboard/products/add', {message : req.flash('message')});
+		},
+
+		do_add : function (req, res) {
+
+			fs.readFile(req.params.photo, function(err,data){
+				var newPath = __dirname + "/uploads/uploadFileName";		
+				fs.writeFile(newPath, data, function(err){
+					if (!err) {
+						console.log('Success uploaded image.');
+					}
+				})
 			});
-		}
-	});
-};
 
 
-exports.add = function (req, res) {	
-	console.log( req.flash('message') );
-	res.render('products/add', {message : req.flash('message')});
-};
 
-exports.do_add = function (req, res) {
+			var DateNow = new Date();
+			var newProduct = new ProductsSchema();
 
-	var DateNow = new Date();
-	var newProduct = new ProductsSchema();
+			newProduct.name = req.body.name;
+			newProduct.price = req.body.price;
+			newProduct.photo = newProduct.photo;
+			newProduct.description = req.body.description;
+			newProduct.status = true;
+			newProduct.createAt = DateNow;
 
-	newProduct.name = req.body.name;
-	newProduct.price = req.body.price;
-	newProduct.photo = newProduct.photo;
-	newProduct.description = req.body.description;
-	newProduct.status = true;
-	newProduct.createAt = DateNow;
+			return newProduct.save(function(err){
+				if (!err) {
+					req.flash('message','Successfully registered product.');
+				} else {
+					req.flash('message','Error registering the product, try again.');
+				}
 
-	newProduct.save(function(err){
-		if (!err) {
-			req.flash('message','Successfully registered product.');
-		} else {
-			req.flash('message','Error registering the product, try again.');
-		}
-
-	});
-
-	res.redirect('/products/add');
-
-};
-
-
-exports.details = function(req, res) {
-	ProductsSchema.find({_id:req.params.id}, function(err,product){
-		if (!err) {
-			res.render('products/details',{ 
-				product : product,
-				maskinput : function(price) {
-					var currency = numeral(price).format('0,0.00');
-					return 'R$'+currency;
-				} 
 			});
-		} else {
-			res.render('products/details', { product : {} });
+
+			res.redirect('/dashboard/products/add');
+
+		},
+
+		details : function(req, res) {
+			return ProductsSchema.find({_id:req.params.id}, function(err,product){
+				if (!err) {
+					res.render('dashboard/products/details',{ 
+						product : product,
+						maskinput : function(price) {
+							var currency = numeral(price).format('0,0.00');
+							return 'R$'+currency;
+						} 
+					});
+				} else {
+					res.render('dashboard/products/details', { product : {} });
+				}
+			});
+			
+		},
+
+		edit : function(req, res) {
+			res.render('dashboard/products/edit');
 		}
-	});
-	
-};
 
 
-exports.test = function(req, res) {
-	ProductsSchema.find(function(err, products){
-		if (!err) {
-			res.json(products);
-		}
-	})
+
+	};
+
+	return ProductsController;
+
 };
+

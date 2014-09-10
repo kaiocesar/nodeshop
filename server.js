@@ -11,14 +11,14 @@ var morgan = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
-var expressLayout = require('express-ejs-layouts');
-var configDB = require('./config/database.js');
+var swig  = require("swig");
+var configDB = require('./configs/database.js');
 
 
 // configuration
 mongoose.connect(configDB.url);
 
-require('./config/passport')(passport);
+require('./configs/passport')(passport);
 
 
 
@@ -29,21 +29,27 @@ app.use(bodyParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
 app.use(express.static(path.join(__dirname + "/public")));
-app.set('views', __dirname +"/app/views");
-app.set('view engine','ejs');
-app.set('layout','layouts/front');
 
-app.use(expressLayout);
+app.engine('html', swig.renderFile);
+app.set('view engine','html');
+app.set('views', __dirname +"/app/views");
+swig.setDefaults({cache: false});
+
+
 
 // require for passport
-app.use(session({secret: '8b2864a9c1da71b4ccefe6872e8b9594'}));
+app.use(session({
+	secret: '8b2864a9c1da71b4ccefe6872e8b9594'
+   ,saveUninitialized : true
+   ,resave: true
+}));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 
 
 // routes
-require('./app/routes.js')(app, passport);
+require('./configs/routes.js')(app, passport);
 
 
 // launch

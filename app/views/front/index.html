@@ -1,4 +1,7 @@
-<%- contentFor('content')%>
+{% extends '../../layouts/front.html' %}
+
+{% block content %}
+
 <div class="jumbotron text-center">
 	<h1><span class="fa fa-money"></span> Node Shop</h1>
 
@@ -7,3 +10,5 @@
 	<a href="/login" class="btn btn-default"><span class="fa fa-user"></span> Local Login</a>
 	<a href="/signup" class="btn btn-default"><span class="fa fa-user"></span> Local Signup</a>
 </div>
+
+{% endblock %}
